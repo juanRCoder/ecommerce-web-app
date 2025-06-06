@@ -1,8 +1,9 @@
 import { Search, SlidersHorizontal, Heart, Plus, ChevronRight } from 'lucide-react';
+import Navbar from '../shared/Navbar';
 
 export default function ProductsView() {
   return (
-    <section className="outline max-w-sm m-auto bg-white" style={{ fontFamily: "'Roboto', sans-serif" }}>
+    <section className="max-w-sm m-auto bg-white" style={{ fontFamily: "'Roboto', sans-serif" }}>
       <h1 className="text-center text-[#29386F] font-bold text-4xl py-5">Mi Tienda</h1>
       {/* SECCION DE SEARCH */}
       <section className='flex px-2 gap-4'>
@@ -20,7 +21,7 @@ export default function ProductsView() {
       </section>
       <hr className='text-[#52514F50] my-5' />
       {/* SECCION DE PRODUCTS */}
-      <section className='grid grid-cols-2 gap-5 mx-2 pb-5'>
+      <section className='grid grid-cols-2 gap-5 mx-2'>
         <div>
           <div className='relative'>
             <img
@@ -99,7 +100,7 @@ export default function ProductsView() {
         </div>
       </section>
       {/* PAGINADOR */}
-      <section className='flex justify-center gap-3'>
+      <section className='flex justify-center gap-3 my-8 mb-12'>
         <div className='text-lg flex gap-1 justify-center font-semibold'>
           <span className='cursor-pointer bg-[#292929] rounded-full px-2.5'>1</span>
           <span className='cursor-pointer text-[#292929] rounded-full px-2'>2</span>
@@ -111,7 +112,7 @@ export default function ProductsView() {
           <ChevronRight size={20} className=''/>
         </div>
       </section>
-      <div className='h-10 w-10 mt-10'></div>
+      <Navbar />
     </section>
   )
 }
