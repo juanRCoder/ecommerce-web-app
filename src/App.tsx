@@ -1,5 +1,7 @@
+import ProductsView from "./views/ProductsView";
+
 export default function App() {
   return (
-    <div>App</div>
+    <ProductsView />
   )
 }
