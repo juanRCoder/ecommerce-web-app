@@ -1,7 +1,9 @@
-import ProductsView from "./views/ProductsView";
+import CartView from "./views/CartView";
+//import ProductsView from "./views/ProductsView";
 
 export default function App() {
   return (
-    <ProductsView />
+    //<ProductsView />
+    <CartView />
   )
 }
