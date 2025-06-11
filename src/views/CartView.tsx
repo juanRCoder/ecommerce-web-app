@@ -85,6 +85,22 @@ export default function CartView() {
             </div>
           </div>
         </section>
+        <div className='text-[#292929] flex justify-between items-center mt-8'>
+          <h3 className='font-semibold'>PRECIO TOTAL</h3>
+          <p className='font-bold text-2xl'>S/ 527.50</p>
+        </div>
+        <section className='mt-8'>
+          <h3 className='text-[#292929] font-semibold text-lg my-4'>METODO DE ENTREGA</h3>
+          <div className='flex gap-3'>
+            <button className='cursor-pointer w-full outline outline-[#208572] py-[5px] text-[#208572] rounded-[5px]'>
+              LOCAL
+            </button>
+            <button className='cursor-pointer w-full outline outline-[#208572] py-[5px] text-[#208572] rounded-[5px]'>
+              DOMICILIO
+            </button>
+          </div>
+          <button className='cursor-pointer mt-5 w-full outline outline-[#208572] py-[5px] bg-[#208572] text-white rounded-[5px]'>REALIZAR PEDIDO</button>
+        </section>
       </div>
       <Navbar />
     </section>
