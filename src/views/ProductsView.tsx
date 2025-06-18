@@ -1,5 +1,5 @@
 import { Search, SlidersHorizontal, Store } from 'lucide-react';
-import Navbar from '../shared/Navbar';
+import NavbarComponent from '../components/NavbarComponent';
 import { useState } from 'react';
 import ProductCardComponent from '../components/ProductCardComponent';
 import FilterComponent from '../components/FilterComponent';
@@ -43,7 +43,7 @@ export default function ProductsView() {
         </section>
         <PagerComponent />
       </div>
-      <Navbar />
+      <NavbarComponent />
     </section>
   )
 }

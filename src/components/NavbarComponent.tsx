@@ -1,6 +1,6 @@
 import { Store, ShoppingCart, ClipboardList, User } from 'lucide-react';
 
-export default function Navbar() {
+export default function NavbarComponent() {
   return (
     <section className='fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-sm bg-[#208572] py-3 flex-wrap gap-3 flex justify-evenly pt-5 z-50'>
       <span className="absolute top-0 left-[40px] border-l-12 border-r-14 border-t-12 border-l-transparent border-r-transparent border-t-white" />

@@ -30,43 +30,37 @@ export default function AuthView() {
                   <input type="password" className="text-sm outline outline-[#2929294D] rounded-[5px] p-1 px-3" style={{ fontFamily: "Inter" }} required />
                 </div>
               </form>
-              <button form="loginForm" type="submit" className='mt-4 cursor-pointer w-full bg-[#208572] py-[5px] rounded-[5px]'>
-                REGISTRARSE
+              <button form="loginForm" type="submit" className='mt-4 cursor-pointer w-full bg-[#208572] py-3 rounded-[5px] font-medium'>
+                CONTINUAR
               </button>
-              <p className="text-sm mt-4 text-center text-[#292929]">
-                no estas registrado?
-                <a onClick={() => setToggleForm(!toggleForm)} className="text-[#208572] underline cursor-pointer pl-1">Registrarse</a>
-              </p>
+              <button onClick={() => setToggleForm(!toggleForm)} type="button" className='outline outline-[#208572] mt-4 cursor-pointer w-full text-[#208572] py-2 rounded-[5px] font-medium'>
+                CREA UNA CUENTA
+              </button>
             </>
           ) : (
             <>
               {/* REGISTRO */}
-              <h2 className="text-[#208572] font-bold">REGISTRO</h2>
+              <h2 className="text-[#208572] font-bold">REGISTRATE</h2>
               <form id="registerForm" className="flex flex-col gap-3 mt-4">
                 <div className="text-[#292929] flex flex-col gap-1">
                   <label className="text-sm">Nombre y Apellido</label>
-                  <input type="text" className="text-sm outline outline-[#2929294D] rounded-[5px] p-1 px-3" style={{ fontFamily: "Inter" }} required />
+                  <input type="text" className="text-sm outline outline-[#2929294D] rounded-[5px] py-2 p-1 px-3" style={{ fontFamily: "Inter" }} required />
                 </div>
                 <div className="text-[#292929] flex flex-col gap-1">
                   <label className="text-sm">Correo Electronico (email)</label>
-                  <input type="email" className="text-sm outline outline-[#2929294D] rounded-[5px] p-1 px-3" style={{ fontFamily: "Inter" }} required />
-                </div>
-                <div className="text-[#292929] flex flex-col gap-1">
-                  <label className="text-sm">Telefono Movil</label>
-                  <input type="number" className="text-sm outline outline-[#2929294D] rounded-[5px] p-1 px-3" style={{ fontFamily: "Inter" }} required />
+                  <input type="email" className="text-sm outline outline-[#2929294D] rounded-[5px] py-2 p-1 px-3" style={{ fontFamily: "Inter" }} required />
                 </div>
                 <div className="text-[#292929] flex flex-col gap-1">
                   <label className="text-sm">Contraseña</label>
-                  <input type="password" className="text-sm outline outline-[#2929294D] rounded-[5px] p-1 px-3" style={{ fontFamily: "Inter" }} required />
+                  <input type="password" className="text-sm outline outline-[#2929294D] rounded-[5px] py-2 p-1 px-3" style={{ fontFamily: "Inter" }} required />
                 </div>
               </form>
-              <button form="registerForm" type="submit" className='mt-4 cursor-pointer w-full bg-[#208572] py-[5px] rounded-[5px]'>
-                REGISTRARSE
+              <button form="registerForm" type="submit" className='mt-4 cursor-pointer w-full bg-[#208572] py-3 rounded-[5px] font-medium'>
+                REGISTRATE
               </button>
-              <p className="text-sm mt-4 text-center text-[#292929]">
-                ya estas logueado?
-                <a onClick={() => setToggleForm(!toggleForm)} className="text-[#208572] underline cursor-pointer pl-2">Iniciar Session</a>
-              </p>
+              <button onClick={() => setToggleForm(!toggleForm)} type="button" className='outline outline-[#208572] mt-4 cursor-pointer w-full text-[#208572] py-2 rounded-[5px] font-medium'>
+                INICIAR SESION
+              </button>
             </>
           )
         }
