@@ -8,6 +8,12 @@ import PagerComponent from '../components/PagerComponent';
 export default function ProductsView() {
   const [openFilter, setOpenFilter] = useState<boolean>(false)
 
+  const allProducts = [
+    { name: "Gaseosa Coca-Cola de 3L", price: 9, imageUrl: "/images/test_img1.jpg", isFavorite: false },
+    { name: "Gaseosa Coca-Cola de 3LL", price: 9, imageUrl: "/images/test_img1.jpg", isFavorite: false },
+    { name: "Gaseosa Coca-Cola de 3LL", price: 9, imageUrl: "/images/test_img1.jpg", isFavorite: false }
+  ]
+
   return (
     <section className="select-none relative flex flex-col justify-between max-w-sm m-auto min-h-screen bg-white"
       style={{ fontFamily: "Oswald" }}
@@ -37,9 +43,9 @@ export default function ProductsView() {
           <FilterComponent />
         )}
         <section className='flex flex-col gap-4 mt-5'>
-          <ProductCardComponent />
-          <ProductCardComponent />
-          <ProductCardComponent />
+          {allProducts.map((product, index) => (
+            <ProductCardComponent key={index} {...product} />
+          ))}
         </section>
         <PagerComponent />
       </div>
