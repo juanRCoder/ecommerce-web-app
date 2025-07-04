@@ -8,7 +8,7 @@ type ProductCardComponentProps = {
   isFavorite: boolean
 }
 
-export default function ProductCardComponent({ name, price, imageUrl, isFavorite }: ProductCardComponentProps) {
+export default function ProductCard({ name, price, imageUrl, isFavorite }: ProductCardComponentProps) {
   const [markFavorite, setMarkFavorite] = useState<boolean>(isFavorite);
 
   return (

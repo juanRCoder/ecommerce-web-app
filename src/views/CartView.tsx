@@ -1,5 +1,5 @@
 import { ShoppingCart, Plus, Minus } from 'lucide-react';
-import NavbarComponent from '../components/NavbarComponent';
+import Navbar from '../components/Navbar';
 import { useState } from 'react';
 
 export default function CartView() {
@@ -169,7 +169,7 @@ export default function CartView() {
           </button>
         </div>
       </div>
-      <NavbarComponent />
+      <Navbar />
     </section>
   )
 }

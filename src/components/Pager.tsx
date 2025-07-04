@@ -1,6 +1,6 @@
 import { ChevronRight } from 'lucide-react';
 
-export default function PagerComponent() {
+export default function Pager() {
   return (
     <section className='flex justify-center items-center gap-3 my-8'>
       <div className='flex gap-1 items-center justify-center font-semibold'>

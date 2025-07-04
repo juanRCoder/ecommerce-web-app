@@ -1,7 +1,7 @@
 import { X, ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 
-export default function FilterComponent() {
+export default function Filter() {
   const [openCategory, setOpenCategory] = useState<boolean>(false)
 
   return (

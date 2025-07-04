@@ -1,9 +1,9 @@
 import { Search, SlidersHorizontal, Store } from 'lucide-react';
-import NavbarComponent from '../components/NavbarComponent';
+import Navbar from '../components/Navbar';
 import { useState } from 'react';
-import ProductCardComponent from '../components/ProductCardComponent';
-import FilterComponent from '../components/FilterComponent';
-import PagerComponent from '../components/PagerComponent';
+import ProductCard from '../components/ProductCard';
+import Filter from '../components/Filter';
+import Pager from '../components/Pager';
 
 export default function ProductsView() {
   const [openFilter, setOpenFilter] = useState<boolean>(false)
@@ -40,16 +40,16 @@ export default function ProductsView() {
           </div>
         </section>
         {openFilter && (
-          <FilterComponent />
+          <Filter />
         )}
         <section className='flex flex-col gap-4 mt-5'>
           {allProducts.map((product, index) => (
-            <ProductCardComponent key={index} {...product} />
+            <ProductCard key={index} {...product} />
           ))}
         </section>
-        <PagerComponent />
+        <Pager />
       </div>
-      <NavbarComponent />
+      <Navbar />
     </section>
   )
 }
