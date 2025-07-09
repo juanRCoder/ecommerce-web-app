@@ -6,21 +6,92 @@ export const getProducts = async (
   res: Response,
   next: NextFunction
 ) => {
+  const { page, limit, categories, search } = req.query;
+  if (!page || !limit) {
+    res.status(400).json({ message: "Page and Limit is required" });
+    return;
+  }
+  const pageNumber = Number(page);
+  const limitNumber = Number(limit);
+
+  if (isNaN(pageNumber) || isNaN(limitNumber)) {
+    res.status(400).json({ message: "Page and Limit must be numbers" });
+    return;
+  }
+  const offset = (pageNumber - 1) * limitNumber;
+  const categoryList =
+    typeof categories === "string" && categories.length > 0
+      ? categories.split(",").map((c) => c.trim())
+      : [];
+
   try {
-    const products = await prisma.product.findMany({
-      include: {
-        categories: {
-          select: {
-            name: true,
+    const conditions = [];
+    if (search) {
+      conditions.push({
+        name: {
+          contains: search as string,
+          mode: "insensitive" as const,
+        },
+      });
+    }
+
+    if (categoryList.length > 0) {
+      conditions.push({
+        productCategories: {
+          some: {
+            category: {
+              name: {
+                in: categoryList,
+              },
+            },
           },
         },
-      },
-    });
-    const whioutCategories = products.map((p) => ({
-      ...p,
-      categories: p.categories.length > 0 ? p.categories : null,
+      });
+    }
+
+    const whereOptions = conditions.length > 0 ? { AND: conditions } : {};
+
+    const [products, total] = await Promise.all([
+      prisma.product.findMany({
+        where: whereOptions,
+        skip: offset,
+        take: limitNumber,
+        select: {
+          id: true,
+          name: true,
+          price: true,
+          status: true,
+          imageUrl: true,
+          productCategories: {
+            select: {
+              category: {
+                select: {
+                  name: true,
+                },
+              },
+            },
+          },
+        },
+      }),
+      prisma.product.count({ where: whereOptions }),
+    ]);
+
+    const cleanedProducts = products.map(({ productCategories, ...rest }) => ({
+      ...rest,
+      categories:
+        productCategories.length > 0
+          ? productCategories.map((pc) => pc.category.name)
+          : null,
     }));
-    res.status(200).json(whioutCategories);
+
+    res.status(200).json({
+      total,
+      page: pageNumber,
+      limit: limitNumber,
+      totalPages: Math.ceil(total / limitNumber),
+      products: cleanedProducts,
+    });
+    return;
   } catch (error) {
     console.error("[Controller: getProducts]", error);
     next(error);

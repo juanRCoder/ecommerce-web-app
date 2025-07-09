@@ -24,7 +24,7 @@ model Product {
   createAt    DateTime @default(now())
   updateAt    DateTime @updatedAt
 
-  categories  Category[]  @relation("ProductCategories")
+  productCategories ProductCategory[]
   @@map("products")
 }
 
@@ -35,6 +35,17 @@ model Category {
   createAt    DateTime @default(now())
   updateAt    DateTime @updatedAt
 
-  products   Product[]   @relation("ProductCategories")
+  productCategories ProductCategory[]
   @@map("categories")
+}
+
+model ProductCategory {
+  product     Product   @relation(fields: [productId], references: [id])
+  productId   String
+
+  category    Category  @relation(fields: [categoryId], references: [id])
+  categoryId  String
+
+  @@id([productId, categoryId])
+  @@map("product_categories")
 }
