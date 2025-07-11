@@ -1,13 +1,22 @@
 import { Search, SlidersHorizontal, Store } from 'lucide-react';
 import Navbar from '../components/Navbar';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ProductCard from '../components/ProductCard';
 import Filter from '../components/Filter';
 import Pager from '../components/Pager';
+import { getProducts } from '../services/ProductService';
 
 export default function ProductsView() {
   const [openFilter, setOpenFilter] = useState<boolean>(false)
 
+  useEffect(() => {
+    const getData = async () => {
+      const data = await getProducts('1', '3')
+      console.log(data)
+    }
+    getData()
+  }, [])
+  
   const allProducts = [
     { name: "Gaseosa Coca-Cola de 3L", price: 9, imageUrl: "/images/test_img1.jpg", isFavorite: false },
     { name: "Gaseosa Coca-Cola de 3LL", price: 9, imageUrl: "/images/test_img1.jpg", isFavorite: false },
