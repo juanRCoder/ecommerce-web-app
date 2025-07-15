@@ -1,27 +1,27 @@
 import { Search, SlidersHorizontal, Store } from 'lucide-react';
-import Navbar from '../components/Navbar';
+import Navbar from '@/components/Navbar';
 import { useEffect, useState } from 'react';
-import ProductCard from '../components/ProductCard';
-import Filter from '../components/Filter';
-import Pager from '../components/Pager';
-import { getProducts } from '../services/ProductService';
+import ProductCard from '@/components/ProductCard';
+import Filter from '@/components/Filter';
+import Pager from '@/components/Pager';
+import { getProducts } from '@/services/ProductService';
+import type { Product } from '@/interfaces/ProductInterface';
+
 
 export default function ProductsView() {
   const [openFilter, setOpenFilter] = useState<boolean>(false)
+  const [products, setProducts] = useState<Product[]>()
+  const [page, setPage] = useState<number>(1)
+  const [totalPages, setTotalPages] = useState<number>(1)
 
   useEffect(() => {
-    const getData = async () => {
-      const data = await getProducts('1', '3')
-      console.log(data)
+    const getAllProducts = async () => {
+      const data = await getProducts(page)
+      setProducts(data.products)
+      setTotalPages(data.totalPages)
     }
-    getData()
-  }, [])
-  
-  const allProducts = [
-    { name: "Gaseosa Coca-Cola de 3L", price: 9, imageUrl: "/images/test_img1.jpg", isFavorite: false },
-    { name: "Gaseosa Coca-Cola de 3LL", price: 9, imageUrl: "/images/test_img1.jpg", isFavorite: false },
-    { name: "Gaseosa Coca-Cola de 3LL", price: 9, imageUrl: "/images/test_img1.jpg", isFavorite: false }
-  ]
+    getAllProducts()
+  }, [page])
 
   return (
     <section className="select-none relative flex flex-col justify-between max-w-sm m-auto min-h-screen bg-white"
@@ -52,11 +52,11 @@ export default function ProductsView() {
           <Filter />
         )}
         <section className='flex flex-col gap-4 mt-5'>
-          {allProducts.map((product, index) => (
+          {products && products.map((product, index) => (
             <ProductCard key={index} {...product} />
           ))}
         </section>
-        <Pager />
+        <Pager page={page} totalPages={totalPages} setPage={setPage} />
       </div>
       <Navbar />
     </section>

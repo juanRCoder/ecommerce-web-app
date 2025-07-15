@@ -1,15 +1,9 @@
 import { Heart } from 'lucide-react';
 import { useState } from 'react';
+import type { Product } from '@/interfaces/ProductInterface';
 
-type ProductCardComponentProps = {
-  name: string
-  price: number
-  imageUrl: string
-  isFavorite: boolean
-}
-
-export default function ProductCard({ name, price, imageUrl, isFavorite }: ProductCardComponentProps) {
-  const [markFavorite, setMarkFavorite] = useState<boolean>(isFavorite);
+export default function ProductCard({ name, price, imageUrl }: Partial<Product>) {
+  const [markFavorite, setMarkFavorite] = useState<boolean>(false);
 
   return (
     <div className='relative flex justify-between p-2.5 outline outline-[#29292930] rounded-[10px]'>
@@ -32,8 +26,8 @@ export default function ProductCard({ name, price, imageUrl, isFavorite }: Produ
           />
         </div>
         <div className='flex flex-col gap-2.5'>
-          <p className='text-[#208572] text-2xl font-semibold tracking-[-1px]'>S/ {price.toFixed(2)}</p>
-          <button className='outline outline-[#208572] py-[5px] px-2.5 text-[#208572] rounded-[5px]'>AGREGAR</button>
+          <p className='text-[#208572] text-2xl font-semibold tracking-[-1px]'>S/ {price && price.toFixed(2)}</p>
+          <button className='outline outline-[#208572] py-[5px] px-2.5 text-[#208572] rounded-[5px] cursor-pointer'>AGREGAR</button>
         </div>
       </div>
     </div>
