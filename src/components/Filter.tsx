@@ -1,8 +1,20 @@
+import { useEffect, useState } from 'react';
 import { X, ChevronDown } from 'lucide-react';
-import { useState } from 'react';
+import type { Category } from '@/interfaces/CategoryInterface';
+import { getCategories } from '@/services/CategoryService';
 
 export default function Filter() {
   const [openCategory, setOpenCategory] = useState<boolean>(false)
+  const [allCategories, setAllCategories] = useState<Category[]>()
+
+  useEffect(() => {
+    const getAllCategories = async () => {
+      const data = await getCategories()
+      setAllCategories(data)
+    }
+    getAllCategories()
+  }, [])
+
 
   return (
     <section className='mt-3'>
@@ -26,10 +38,9 @@ export default function Filter() {
         <ChevronDown onClick={() => setOpenCategory(!openCategory)} className={`${openCategory ? 'rotate-180' : ''} transition cursor-pointer`} />
         {openCategory && (
           <div className='absolute top-12 left-0 rounded-[5px] w-full outline outline-[#29292930] text-[#292929 flex flex-col bg-white z-50'>
-            <span onClick={() => setOpenCategory(!openCategory)} className='p-3 py-2 cursor-pointer hover:bg-[#20857233]'>Bebidas</span>
-            <span onClick={() => setOpenCategory(!openCategory)} className='p-3 py-2 cursor-pointer hover:bg-[#20857233]'>Snacks</span>
-            <span onClick={() => setOpenCategory(!openCategory)} className='p-3 py-2 cursor-pointer hover:bg-[#20857233]'>Galletas</span>
-            <span onClick={() => setOpenCategory(!openCategory)} className='p-3 py-2 cursor-pointer hover:bg-[#20857233]'>Frutas</span>
+            {allCategories && allCategories.map(ct => (
+              <span key={ct.id} onClick={() => setOpenCategory(!openCategory)} className='p-3 py-2 cursor-pointer hover:bg-[#20857233]'>{ct.name}</span>
+            ))}
           </div>
         )}
       </div>
