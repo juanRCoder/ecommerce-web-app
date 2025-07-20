@@ -1,7 +1,7 @@
 const apiUrl = import.meta.env.VITE_URI_DEV;
 const prefijo = `${apiUrl}/api`;
 
-export const getCategories = async () => {
+export const getAllCategories = async () => {
   try {
     const response = await fetch(`${prefijo}/categories`);
     if (!response.ok) {

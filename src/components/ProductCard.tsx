@@ -1,6 +1,6 @@
 import { Heart } from 'lucide-react';
 import { useState } from 'react';
-import type { Product } from '@/interfaces/ProductInterface';
+import type { Product } from '@/types/product';
 
 export default function ProductCard({ name, price, imageUrl }: Partial<Product>) {
   const [markFavorite, setMarkFavorite] = useState<boolean>(false);

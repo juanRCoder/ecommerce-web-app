@@ -1,26 +1,26 @@
-import { Search, SlidersHorizontal, Store } from 'lucide-react';
-import Navbar from '@/components/Navbar';
 import { useEffect, useState } from 'react';
+import { Search, SlidersHorizontal, Store } from 'lucide-react';
+import { Navbar } from '@/components/common/Navbar';
 import ProductCard from '@/components/ProductCard';
-import Filter from '@/components/Filter';
-import Pager from '@/components/Pager';
-import { getProducts } from '@/services/ProductService';
-import type { Product } from '@/interfaces/ProductInterface';
+import { ProductFilters } from '@/components/ProductFilters';
+import { Pager } from '@/components/common/Pager';
+import { getAllProducts } from '@/services/product';
+import type { Product } from '@/types/product';
 
 
-export default function ProductsView() {
+export default function Products() {
   const [openFilter, setOpenFilter] = useState<boolean>(false)
   const [products, setProducts] = useState<Product[]>()
   const [page, setPage] = useState<number>(1)
   const [totalPages, setTotalPages] = useState<number>(1)
 
   useEffect(() => {
-    const getAllProducts = async () => {
-      const data = await getProducts(page)
+    const fetchProducts = async () => {
+      const data = await getAllProducts(page)
       setProducts(data.products)
       setTotalPages(data.totalPages)
     }
-    getAllProducts()
+    fetchProducts()
   }, [page])
 
   return (
@@ -49,7 +49,7 @@ export default function ProductsView() {
           </div>
         </section>
         {openFilter && (
-          <Filter />
+          <ProductFilters />
         )}
         <section className='flex flex-col gap-4 mt-5'>
           {products && products.map((product, index) => (

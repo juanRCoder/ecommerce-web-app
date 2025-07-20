@@ -1,8 +1,8 @@
 import { ShoppingCart, Plus, Minus } from 'lucide-react';
-import Navbar from '../components/Navbar';
+import { Navbar } from '../components/common/Navbar';
 import { useState } from 'react';
 
-export default function CartView() {
+export default function Cart() {
   const [changeText, setChangeText] = useState<boolean>(false)
 
   return (

@@ -1,5 +1,5 @@
-import ProductsView from "./views/ProductsView";
-//import CartView from "./views/CartView";
+import Products from "@/views/Products";
+//import Cart from "./views/Cart";
 //import FavoritesView from "./views/FavoritesView";
 //import OrdersView from "./views/OrdersView";
 //import VoucherView from "./views/VoucherView";
@@ -8,7 +8,7 @@ import ProductsView from "./views/ProductsView";
 
 export default function App() {
   return (
-    <ProductsView />
+    <Products />
     //<CartView />
     //<VoucherView />
     //<AuthView />

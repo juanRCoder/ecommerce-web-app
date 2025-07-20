@@ -1,7 +1,7 @@
 const apiUrl = import.meta.env.VITE_URI_DEV;
 const prefijo = `${apiUrl}/api`;
 
-export const getProducts = async (page: number, categories?: string) => {
+export const getAllProducts = async (page: number, categories?: string) => {
   try {
     const limitProducts = 1;
     const hasCategory = categories ? `&categories=${categories}` : "";
