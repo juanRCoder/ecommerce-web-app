@@ -1,12 +1,9 @@
+import { usePagerStore } from '@/stores/pager';
 import { ChevronRight, ChevronLeft } from 'lucide-react';
 
-type PagerProps = {
-  totalPages: number;
-  page: number;
-  setPage: (page: number) => void;
-};
 
-export const Pager = ({ totalPages, page, setPage }: PagerProps) => {
+export const Pager = () => {
+  const { page, setPage, totalPages } = usePagerStore();
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   const handleNext = () => {

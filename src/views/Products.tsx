@@ -6,22 +6,29 @@ import { ProductFilters } from '@/components/ProductFilters';
 import { Pager } from '@/components/common/Pager';
 import { getAllProducts } from '@/services/product';
 import type { Product } from '@/types/product';
+import { usePagerStore } from '@/stores/pager';
+import { useProductStore } from '@/stores/product';
 
 
 export default function Products() {
+  const { selectedCategories } = useProductStore()
+  const { page, setTotalPages, setPage } = usePagerStore()
   const [openFilter, setOpenFilter] = useState<boolean>(false)
   const [products, setProducts] = useState<Product[]>()
-  const [page, setPage] = useState<number>(1)
-  const [totalPages, setTotalPages] = useState<number>(1)
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const data = await getAllProducts(page)
+      const data = await getAllProducts(page, selectedCategories, searchTerm)
       setProducts(data.products)
       setTotalPages(data.totalPages)
     }
     fetchProducts()
-  }, [page])
+  }, [page, selectedCategories, searchTerm, setTotalPages])
+
+  useEffect(() => {
+    setPage(1); //reset pagination when writes or change categories
+  }, [searchTerm, selectedCategories, setPage]);
 
   return (
     <section className="select-none relative flex flex-col justify-between max-w-sm m-auto min-h-screen bg-white"
@@ -40,6 +47,8 @@ export default function Products() {
             <input
               type="search"
               placeholder="Buscar"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
               style={{ fontFamily: "Inter" }}
               className="w-full rounded-xl bg-transparent px-5 pl-12 py-2 text-[#52514F] border border-[#29292930] placeholder:text-[#52514F] text-sm placeholder:text-sm placeholder:font-normal outline-none"
             />
@@ -56,7 +65,7 @@ export default function Products() {
             <ProductCard key={index} {...product} />
           ))}
         </section>
-        <Pager page={page} totalPages={totalPages} setPage={setPage} />
+        <Pager />
       </div>
       <Navbar />
     </section>

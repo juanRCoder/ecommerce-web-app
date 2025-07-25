@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react';
 import { X, ChevronDown } from 'lucide-react';
 import type { Category } from '@/types/category';
 import { getAllCategories } from '@/services/category';
+import { useProductStore } from '@/stores/product';
 
 
 export const ProductFilters = () => {
+  const { selectedCategories, setSelectedCategories } = useProductStore()
   const [openCategory, setOpenCategory] = useState<boolean>(false)
   const [allCategories, setAllCategories] = useState<Category[]>()
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
 
   useEffect(() => {
     const fetchCategories = async () => {
