@@ -5,7 +5,7 @@ type productStoreType = {
   setSelectedCategories: (categories: string[]) => void
 }
 
-export const useProductStore = create<productStoreType>((set) => ({
+export const useCategoryStore = create<productStoreType>((set) => ({
   selectedCategories: [],
   setSelectedCategories: (categories) => set({ selectedCategories: categories }),
 }))

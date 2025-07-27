@@ -1,22 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { X, ChevronDown } from 'lucide-react';
-import type { Category } from '@/types/category';
-import { getAllCategories } from '@/services/category';
-import { useProductStore } from '@/stores/product';
+import { useCategoryStore } from '@/stores/category';
+import { useGetAllCategories } from '@/hooks/useGetAllCategories';
 
 
 export const ProductFilters = () => {
-  const { selectedCategories, setSelectedCategories } = useProductStore()
+  const { selectedCategories, setSelectedCategories } = useCategoryStore()
   const [openCategory, setOpenCategory] = useState<boolean>(false)
-  const [allCategories, setAllCategories] = useState<Category[]>()
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      const categoriesData = await getAllCategories()
-      setAllCategories(categoriesData)
-    }
-    fetchCategories()
-  }, [])
+  const { data } = useGetAllCategories()
 
   const handleSelectCategory = (categoryName: string) => {
     const isSelected = selectedCategories.includes(categoryName);
@@ -25,10 +16,6 @@ export const ProductFilters = () => {
     }
     setOpenCategory(!openCategory)
   }
-
-  useEffect(() => {
-    console.log('Categorías seleccionadas:', selectedCategories);
-  }, [selectedCategories]);
 
   const hasSelectedCategories = selectedCategories.length > 0;
 
@@ -48,7 +35,7 @@ export const ProductFilters = () => {
         <ChevronDown className={`${openCategory ? 'rotate-180' : ''} transition`} />
         {openCategory && (
           <div className='absolute top-12 left-0 rounded-[5px] w-full outline outline-[#29292930] text-[#292929] flex flex-col bg-white z-50'>
-            {allCategories && allCategories.map(category => (
+            {data?.map(category => (
               <span key={category.id} onClick={() => handleSelectCategory(category.name)} className='p-3 py-2 cursor-pointer hover:bg-[#20857233]'>{category.name}</span>
             ))}
           </div>
@@ -62,6 +49,7 @@ export const ProductFilters = () => {
             type='number'
             className='w-full flex-1 mr-2 outline-none text-right'
             placeholder='0'
+            defaultValue={0}
           />
           <p>min</p>
         </div>
@@ -71,11 +59,11 @@ export const ProductFilters = () => {
             type='number'
             className='w-full flex-1 mr-2 outline-none text-right'
             placeholder='500'
+            defaultValue={500}
           />
           <p>max</p>
         </div>
       </div>
-      <button className='w-full cursor-pointer mt-3 bg-[#208572] py-[5px] px-2.5 text-white rounded-[5px]'>FILTRAR</button>
     </section>
   )
 }

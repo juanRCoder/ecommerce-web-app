@@ -1,22 +1,17 @@
+import { buildQueryParams } from "@/utils/buildQueryParams";
+import axios from "axios";
+
 const apiUrl = import.meta.env.VITE_URI_DEV;
 const prefijo = `${apiUrl}/api`;
 
 export const getAllProducts = async (
-  page: number,
+  page: number = 1,
   categories?: string[],
   search?: string
 ) => {
   try {
-    const limitProducts = 1;
-    const hasCategory = categories ? `&categories=${categories}` : "";
-    const hasSearch = search ? `&search=${search}` : "";
-    const response = await fetch(
-      `${prefijo}/products?page=${page.toString()}&limit=${limitProducts.toString()}${hasCategory}${hasSearch}`
-    );
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const data = await response.json();
+    const querys = buildQueryParams({ page, limit: 3, categories, search });
+    const { data } = await axios.get(`${prefijo}/products?${querys}`);
     return data;
   } catch (error) {
     console.error("[getProducts] Error fetching data:", error);

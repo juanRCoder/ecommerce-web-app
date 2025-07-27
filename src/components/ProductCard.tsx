@@ -2,14 +2,15 @@ import { Heart } from 'lucide-react';
 import { useState } from 'react';
 import type { Product } from '@/types/product';
 
-export default function ProductCard({ name, price, imageUrl }: Partial<Product>) {
+
+export const ProductCard = ({ name, price, imageUrl }: Partial<Product>) => {
   const [markFavorite, setMarkFavorite] = useState<boolean>(false);
 
   return (
     <div className='relative flex justify-between p-2.5 outline outline-[#29292930] rounded-[10px]'>
       <figure className='max-[300px]:w-[50%] w-[35%]'>
         <img
-          src={imageUrl}
+          src={imageUrl || "https://www.opelgtsource.com/assets/default_product.png"}
           className='outline object-contain'
           alt={name}
         />
