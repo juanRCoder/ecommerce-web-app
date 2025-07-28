@@ -14,7 +14,7 @@ export const ProductSearch = ({searchTerm, setSearchTerm, openFilters, setOpenFi
         <Search color="#208572" size={21} strokeWidth={2.5} className="absolute top-2 left-3" />
         <input
           type="search"
-          placeholder="Buscar"
+          placeholder={`Buscar`}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           style={{ fontFamily: "Inter" }}

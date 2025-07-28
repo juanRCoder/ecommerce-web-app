@@ -1,20 +1,15 @@
-import { Store, ShoppingCart, User } from 'lucide-react';
+import { Store, ShoppingCart } from 'lucide-react';
 
 export const Navbar = () => {
   return (
-    <section className='fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-sm bg-[#208572] py-3 flex-wrap gap-3 flex justify-evenly pt-5 z-50'>
-      <span className="absolute top-0 left-[40px] border-l-12 border-r-14 border-t-12 border-l-transparent border-r-transparent border-t-white" />
-      <div className='flex flex-col items-center cursor-pointer'>
+    <section className='fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-sm bg-[#208572] py-1 flex-wrap gap-3 flex justify-evenly z-50'>
+      <div className='flex flex-col items-center cursor-pointer my-2 py-2 rounded-lg w-20 hover:bg-[#FFFFFF33]'>
         <Store color='#FFFFFF' size={32} />
-        <p className='text-white text-sm'>Tienda</p>
+        <p className='text-white'>Tienda</p>
       </div>
-      <div className='flex flex-col items-center cursor-pointer'>
+      <div className='flex flex-col items-center cursor-pointer my-2 py-2 rounded-lg w-20 hover:bg-[#FFFFFF33]'>
         <ShoppingCart color='#FFFFFF' size={32} />
-        <p className='text-white text-sm'>Mi Carrito</p>
-      </div>
-      <div className='flex flex-col items-center cursor-pointer'>
-        <User color='#FFFFFF' size={32} />
-        <p className='text-white text-sm'>Cuenta</p>
+        <p className='text-white'>Mi Carrito</p>
       </div>
     </section>
   )

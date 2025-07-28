@@ -6,7 +6,7 @@ export const getProducts = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { page, limit, categories, search, minPrice, maxPrice } = req.query;
+  const { page, limit, category, search, minPrice, maxPrice } = req.query;
   if (!page || !limit) {
     res.status(400).json({ message: "Page and Limit is required" });
     return;
@@ -21,11 +21,6 @@ export const getProducts = async (
     return;
   }
   const offset = (pageNumber - 1) * limitNumber;
-  const categoryList =
-    typeof categories === "string" && categories.length > 0
-      ? categories.split(",").map((c) => c.trim())
-      : [];
-
   try {
     const conditions = [];
     if (search) {
@@ -37,15 +32,11 @@ export const getProducts = async (
       });
     }
 
-    if (categoryList.length > 0) {
+    if (category) {
       conditions.push({
-        productCategories: {
-          some: {
-            category: {
-              name: {
-                in: categoryList,
-              },
-            },
+        category: {
+          name: {
+            equals: category as string,
           },
         },
       });
@@ -58,7 +49,6 @@ export const getProducts = async (
         },
       });
     }
-
     if (!isNaN(maxPriceNumber)) {
       conditions.push({
         price: {
@@ -80,34 +70,18 @@ export const getProducts = async (
           price: true,
           status: true,
           imageUrl: true,
-          productCategories: {
-            select: {
-              category: {
-                select: {
-                  name: true,
-                },
-              },
-            },
-          },
+          categoryId: true,
         },
       }),
       prisma.product.count({ where: whereOptions }),
     ]);
-
-    const cleanedProducts = products.map(({ productCategories, ...rest }) => ({
-      ...rest,
-      categories:
-        productCategories.length > 0
-          ? productCategories.map((pc) => pc.category.name)
-          : null,
-    }));
 
     res.status(200).json({
       total,
       page: pageNumber,
       limit: limitNumber,
       totalPages: Math.ceil(total / limitNumber),
-      products: cleanedProducts,
+      products: products,
     });
     return;
   } catch (error) {

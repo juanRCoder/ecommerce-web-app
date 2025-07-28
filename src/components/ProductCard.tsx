@@ -1,11 +1,7 @@
-import { Heart } from 'lucide-react';
-import { useState } from 'react';
 import type { Product } from '@/types/product';
 
 
 export const ProductCard = ({ name, price, imageUrl }: Partial<Product>) => {
-  const [markFavorite, setMarkFavorite] = useState<boolean>(false);
-
   return (
     <div className='relative flex justify-between p-2.5 outline outline-[#29292930] rounded-[10px]'>
       <figure className='max-[300px]:w-[50%] w-[35%]'>
@@ -18,13 +14,6 @@ export const ProductCard = ({ name, price, imageUrl }: Partial<Product>) => {
       <div className='flex flex-col justify-between pl-2 w-1/2'>
         <div className='flex justify-between gap-2.5'>
           <p className='text-sm text-[#292929]'>{name}</p>
-          <Heart
-            color='#208572'
-            size={22}
-            className='cursor-pointer flex-shrink-0'
-            fill={markFavorite ? "#208572" : "none"}
-            onClick={() => setMarkFavorite(!markFavorite)}
-          />
         </div>
         <div className='flex flex-col gap-2.5'>
           <p className='text-[#208572] text-2xl font-semibold tracking-[-1px]'>S/ {price && price.toFixed(2)}</p>

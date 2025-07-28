@@ -6,7 +6,7 @@ import { ProductCard } from '@/components/ProductCard';
 import { ProductFilters } from '@/components/ProductFilters';
 import type { Product } from '@/types/product';
 import { usePagerStore } from '@/stores/pager'
-import { useCategoryStore } from '@/stores/category';
+import { useProductStore } from '@/stores/products';
 import { useGetAllProducts } from '@/hooks/useGetAllProducts'
 import { useCustomDebounce } from '@/hooks/useDebounce'
 import { ProductSearch } from '@/components/ProductSearch';
@@ -18,9 +18,9 @@ export default function Products() {
 
   const debouncedSearchTerm = useCustomDebounce(searchTerm, 300);
 
-  const { selectedCategories } = useCategoryStore();
+  const { selectedCategory, minPrice, maxPrice } = useProductStore();
   const { page, setTotalPages, setPage } = usePagerStore();
-  const { data, isLoading } = useGetAllProducts(page, selectedCategories, debouncedSearchTerm);
+  const { data, isLoading } = useGetAllProducts(page, selectedCategory, debouncedSearchTerm, minPrice, maxPrice);
 
   useEffect(() => {
     if (data?.totalPages) setTotalPages(data.totalPages)
@@ -28,7 +28,7 @@ export default function Products() {
 
   useEffect(() => {
     setPage(1); // reset pagination when search or categories change
-  }, [debouncedSearchTerm, selectedCategories, setPage])
+  }, [debouncedSearchTerm, selectedCategory, setPage])
 
   return (
     <section
@@ -50,10 +50,19 @@ export default function Products() {
         />
         {openFilters && <ProductFilters />}
         <section className="flex flex-col gap-4 mt-5">
-          {isLoading && <p className='text-black'>Cargando productos...</p>}
-          {data?.products?.map((product: Product) => (
-            <ProductCard key={product.id} {...product} />
-          ))}
+          {isLoading ? (
+            <p>Cargando...</p>
+          ) : data?.products?.length === 0 ? (
+            <p className="text-center text-gray-600">
+              No se encontró ningún producto con el término "<span className="font-medium">{searchTerm}</span>".
+            </p>
+          ) : (
+            <>
+              {data?.products.map((product: Product) => (
+                <ProductCard key={product.id} {...product} />
+              ))}
+            </>
+          )}
         </section>
         <Pager />
       </div>

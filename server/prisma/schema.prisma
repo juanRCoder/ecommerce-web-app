@@ -20,32 +20,21 @@ model Product {
   stock       Int
   status      String
   imageUrl    String?
+  categoryId  String
+  category    Category @relation(fields: [categoryId], references: [id])
 
   createAt    DateTime @default(now())
   updateAt    DateTime @updatedAt
 
-  productCategories ProductCategory[]
   @@map("products")
 }
 
 model Category {
   id          String  @id @default(uuid())
-  name       String
-
+  name        String
+  products    Product[]
   createAt    DateTime @default(now())
   updateAt    DateTime @updatedAt
 
-  productCategories ProductCategory[]
   @@map("categories")
-}
-
-model ProductCategory {
-  product     Product   @relation(fields: [productId], references: [id])
-  productId   String
-
-  category    Category  @relation(fields: [categoryId], references: [id])
-  categoryId  String
-
-  @@id([productId, categoryId])
-  @@map("product_categories")
 }
