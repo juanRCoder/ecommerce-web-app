@@ -5,7 +5,7 @@ import { useGetAllCategories } from '@/hooks/useGetAllCategories';
 
 
 export const ProductFilters = () => {
-  const { selectedCategory, setSelectedCategory, setMaxPrice, setMinPrice } = useProductStore()
+  const { selectedCategory, setSelectedCategory, setMaxPrice, maxPrice, setMinPrice, minPrice } = useProductStore()
   const [openCategory, setOpenCategory] = useState<boolean>(false)
   const { data } = useGetAllCategories()
 
@@ -37,7 +37,11 @@ export const ProductFilters = () => {
             type='number'
             className='w-full flex-1 mr-2 outline-none text-right'
             placeholder='0'
-            onChange={(e) => setMinPrice(Number(e.target.value))}
+            value={minPrice === 0 ? '' : minPrice}
+            onChange={(e) => {
+              const value = e.target.value;
+              setMinPrice(value === '' ? 0 : Number(value));
+            }}
           />
           <p>min</p>
         </div>
@@ -47,9 +51,10 @@ export const ProductFilters = () => {
             type='number'
             className='w-full flex-1 mr-2 outline-none text-right'
             placeholder='500'
+            value={maxPrice === 500 ? '' : maxPrice}
             onChange={(e) => {
               const value = e.target.value;
-              setMaxPrice(value === "" ? 500 : Number(value));
+              setMaxPrice(value === '' ? 500 : Number(value));
             }}
           />
           <p>max</p>

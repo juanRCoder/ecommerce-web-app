@@ -12,7 +12,7 @@ export const getAllProducts = async (
   maxPrice: number = 500
 ) => {
   try {
-    const querys = buildQueryParams({ page, limit: 3, category, search, minPrice, maxPrice });
+    const querys = buildQueryParams({ page, limit: 4, category, search, minPrice, maxPrice });
     const { data } = await axios.get(`${prefijo}/products?${querys}`);
     return data;
   } catch (error) {
