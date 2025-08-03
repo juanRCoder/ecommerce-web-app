@@ -7,7 +7,7 @@ type pagerStoreType = {
   setTotalPages: (nPages: number) => void
 }
 
-export const usePagerStore = create<pagerStoreType>((set) => ({
+export const usePaginationStore = create<pagerStoreType>((set) => ({
   page: 1,
   setPage: (page) => set({ page }),
   totalPages: 1,

@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
-import { useProductStore } from '@/stores/products';
-import { useGetAllCategories } from '@/hooks/useGetAllCategories';
+import { useGetAllCategories } from '@/hooks';
+import { useProductStore } from '@/stores/products.store';
 
 
 export const ProductFilters = () => {
   const { selectedCategory, setSelectedCategory, setMaxPrice, maxPrice, setMinPrice, minPrice } = useProductStore()
   const [openCategory, setOpenCategory] = useState<boolean>(false)
-  const { data } = useGetAllCategories()
+  const { data: allCateogories } = useGetAllCategories()
 
   const handleSelectCategory = (categoryName: string) => {
     setSelectedCategory(categoryName)
@@ -23,7 +23,7 @@ export const ProductFilters = () => {
         {openCategory && (
           <div className='absolute top-12 left-0 rounded-[5px] w-full outline outline-[#29292930] text-[#292929] flex flex-col bg-white z-50'>
             <span onClick={() => handleSelectCategory('')} className='p-3 py-2 cursor-pointer hover:bg-[#20857233]'>Todos</span>
-            {data?.map(category => (
+            {allCateogories?.map(category => (
               <span key={category.id} onClick={() => handleSelectCategory(category.name)} className='p-3 py-2 cursor-pointer hover:bg-[#20857233]'>{category.name}</span>
             ))}
           </div>

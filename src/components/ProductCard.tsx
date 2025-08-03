@@ -1,4 +1,4 @@
-import type { Product } from '@/types/product';
+import type { Product } from '@/types/products.types';
 
 
 export const ProductCard = ({ name, price, imageUrl }: Partial<Product>) => {

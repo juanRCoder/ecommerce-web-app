@@ -1,33 +1,32 @@
 import { useEffect, useState } from 'react';
-import { Store } from 'lucide-react';
-import { Navbar } from '@/components/common/Navbar';
-import { Pager } from '@/components/common/Pager';
-import { ProductCard } from '@/components/ProductCard';
-import { ProductFilters } from '@/components/ProductFilters';
-import type { Product } from '@/types/product';
-import { usePagerStore } from '@/stores/pager';
-import { useProductStore } from '@/stores/products';
-import { useGetAllProducts } from '@/hooks/useGetAllProducts';
-import { useCustomDebounce } from '@/hooks/useDebounce';
-import { ProductSearch } from '@/components/ProductSearch';
+import { Search, SlidersHorizontal, Store } from 'lucide-react';
 
-export default function Products() {
+import { MainNavbar, ProductCard, ProductFilters } from '@/components';
+import { useGetAllProducts, useCustomDebounce } from '@/hooks';
+import { BasePagination } from '@/shared/BasePagination';
+import { useProductStore } from '@/stores/products.store';
+import type { Product } from '@/types/products.types';
+
+
+export default function ProductsView() {
+  const [currentPage, setCurrentPage] = useState<number>(1)
+  const [totalPages, setTotalPages] = useState<number>(1)
   const [openFilters, setOpenFilters] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
-  const debouncedSearchTerm = useCustomDebounce(searchTerm, 300);
 
   const { selectedCategory, minPrice, maxPrice, cleanFilters, resetCategory } = useProductStore();
-  const { page, setTotalPages, setPage } = usePagerStore();
-  const { data, isLoading } = useGetAllProducts(page, selectedCategory, debouncedSearchTerm, minPrice, maxPrice);
+
+  const debouncedSearchTerm = useCustomDebounce(searchTerm, 300);
+  const { data, isLoading } = useGetAllProducts(currentPage, selectedCategory, debouncedSearchTerm, minPrice, maxPrice);
 
   useEffect(() => {
     if (data?.totalPages) setTotalPages(data.totalPages);
   }, [data?.totalPages, setTotalPages]);
 
   useEffect(() => {
-    setPage(1); // Reset page when search or category changes
-  }, [debouncedSearchTerm, selectedCategory, setPage]);
+    setCurrentPage(1); // Reset page when search or category changes
+  }, [debouncedSearchTerm, selectedCategory, setCurrentPage]);
 
   return (
     <section
@@ -41,16 +40,29 @@ export default function Products() {
             Mi Tienda Online
           </h1>
         </div>
-        <ProductSearch
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
-          openFilters={openFilters}
-          setOpenFilters={setOpenFilters}
-        />
+        <section className="flex gap-4">
+          <div className="relative flex-1">
+            <Search color="#208572" size={21} strokeWidth={2.5} className="absolute top-2 left-3" />
+            <input
+              type="search"
+              placeholder={`Buscar`}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              style={{ fontFamily: "Inter" }}
+              className="w-full rounded-xl bg-transparent px-5 pl-12 py-2 text-[#52514F] border border-[#29292930] placeholder:text-[#52514F] text-sm placeholder:text-sm placeholder:font-normal outline-none"
+            />
+          </div>
+          <div
+            onClick={() => setOpenFilters(!openFilters)}
+            className="bg-[#208572] grid place-items-center rounded-xl cursor-pointer px-3.5"
+          >
+            <SlidersHorizontal size={24} />
+          </div>
+        </section>
         {openFilters && <ProductFilters />}
         <section className="flex flex-col gap-4 mt-5">
           {isLoading ? (
-            <p>Cargando...</p>
+            <p>Cargando productos...</p>
           ) : data?.products?.length === 0 ? (
             <>
               <p className="text-center text-gray-600">
@@ -78,9 +90,13 @@ export default function Products() {
             </div>
           )}
         </section>
-        <Pager />
+        <BasePagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          changePage={setCurrentPage}
+        />
       </div>
-      <Navbar />
+      <MainNavbar />
     </section>
   );
 }
