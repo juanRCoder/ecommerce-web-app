@@ -24,8 +24,8 @@ export const BasePagination = ({ currentPage, changePage, totalPages }: BasePagi
   return (
     <section className='flex justify-center items-center gap-3 my-8'>
       <div
-        className={`rounded-full text-sm flex justify-center items-center text-[#292929] cursor-pointer 
-          ${currentPage === 1 ? 'invisible' : ''}
+        className={`rounded-full text-sm flex justify-center items-center 
+          ${currentPage === 1 ? 'text-[#b9b9b9] cursor-default select-none' : 'text-[#292929] cursor-pointer'}
         `}
         onClick={handleBefore}
       >
@@ -45,8 +45,8 @@ export const BasePagination = ({ currentPage, changePage, totalPages }: BasePagi
         ))}
       </div>
       <div
-        className={`rounded-full text-sm flex justify-center items-center text-[#292929] cursor-pointer
-          ${currentPage === totalPages ? 'invisible' : ''}
+        className={`rounded-full text-sm flex justify-center items-center
+          ${currentPage === totalPages ? 'text-[#b9b9b9] cursor-default select-none' : 'text-[#292929] cursor-pointer'}
         `}
         onClick={handleNext}
       >

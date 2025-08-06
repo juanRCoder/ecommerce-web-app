@@ -7,6 +7,7 @@ import { useProductStore } from '@/stores/products.store';
 export const ProductFilters = () => {
   const { selectedCategory, setSelectedCategory, setMaxPrice, maxPrice, setMinPrice, minPrice } = useProductStore()
   const [openCategory, setOpenCategory] = useState<boolean>(false)
+  
   const { data: allCateogories } = useGetAllCategories()
 
   const handleSelectCategory = (categoryName: string) => {

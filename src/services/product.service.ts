@@ -14,6 +14,7 @@ export const getAllProducts = async (
   try {
     const querys = buildQueryParams({ page, limit: 4, category, search, minPrice, maxPrice });
     const { data } = await axios.get(`${prefijo}/products?${querys}`);
+    console.log(data)
     return data;
   } catch (error) {
     console.error("[getProducts] Error fetching data:", error);
