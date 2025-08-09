@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Search, SlidersHorizontal, Store } from 'lucide-react';
 
-import { MainNavbar, ProductCard, ProductFilters } from '@/components';
+import { MainHeader, MainNavbar, ProductCard, ProductFilters } from '@/components';
 import { useGetAllProducts, useCustomDebounce } from '@/hooks';
 import { BasePagination } from '@/shared/BasePagination';
 import { useProductStore } from '@/stores/products.store';
@@ -34,12 +34,7 @@ export default function ProductsView() {
       style={{ fontFamily: "Oswald" }}
     >
       <div className="px-2 mb-28">
-        <div className="flex items-center justify-center gap-2">
-          <Store color="#208572" size={32} strokeWidth={2} />
-          <h1 className="text-center text-[#208572] font-bold text-2xl py-5">
-            Mi Tienda Online
-          </h1>
-        </div>
+        <MainHeader title="Mi Tienda Online" icon={Store}/>
         <section className="flex gap-4">
           <div className="relative flex-1">
             <Search color="#208572" size={21} strokeWidth={2.5} className="absolute top-2 left-3" />
