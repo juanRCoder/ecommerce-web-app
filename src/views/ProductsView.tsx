@@ -80,7 +80,7 @@ export default function ProductsView() {
           ) : (
             <div className="grid grid-cols-2 gap-4">
               {data?.products.map((product: Product) => (
-                <ProductCard key={product.id} {...product} />
+                <ProductCard key={product.id} product={{ ...product, quantity: 0 }} />
               ))}
             </div>
           )}

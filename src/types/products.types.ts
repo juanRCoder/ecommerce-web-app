@@ -6,3 +6,5 @@ export interface Product {
   status: string
   categoryId: string
 }
+
+export type ProductToCart = Product & { quantity: number }

@@ -1,7 +1,5 @@
-import { Product } from "@/types/products.types";
+import { ProductToCart } from "@/types/products.types";
 import { create } from "zustand";
-
-type ProductToCart = Product & { quantity: number };
 
 type cartStoreType = {
   products: ProductToCart[];
