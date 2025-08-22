@@ -33,9 +33,9 @@ export default function ProductsView() {
       className="select-none relative flex flex-col justify-between max-w-sm m-auto min-h-screen bg-white"
       style={{ fontFamily: "Oswald" }}
     >
-      <div className="px-2 mb-28">
-        <MainHeader title="Mi Tienda Online" icon={Store}/>
-        <section className="flex gap-4">
+      <div className="flex-1 px-2">
+        <MainHeader title="TIENDA ONLINE" icon={Store}/>
+        <section className="flex gap-2 min-[250px]:gap-4 max-[250px]:flex-col">
           <div className="relative flex-1">
             <Search color="#208572" size={21} strokeWidth={2.5} className="absolute top-2 left-3" />
             <input
@@ -49,7 +49,7 @@ export default function ProductsView() {
           </div>
           <div
             onClick={() => setOpenFilters(!openFilters)}
-            className="bg-[#208572] grid place-items-center rounded-xl cursor-pointer px-3.5"
+            className="bg-[#208572] grid place-items-center rounded-xl cursor-pointer px-3.5 max-[250px]:py-1.5"
           >
             <SlidersHorizontal size={24} />
           </div>
@@ -78,7 +78,7 @@ export default function ProductsView() {
               )}
             </>
           ) : (
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid min-[320px]:grid-cols-2 gap-4">
               {data?.products.map((product: Product) => (
                 <ProductCard key={product.id} product={{ ...product, quantity: 0 }} />
               ))}

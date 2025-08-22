@@ -11,7 +11,7 @@ export const MainNavbar = () => {
 
   const handleNavigate = (path: string) => navigate(path)
   return (
-    <section className='fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-sm bg-[#208572] py-1 flex-wrap gap-3 flex justify-evenly z-50'>
+    <section className='flex flex-wrap bg-[#208572] py-1 gap-3 justify-evenly z-50'>
       {menuItems.map((item, index) => {
         const Icon = item.icon;
         const isActive = location.pathname === item.path;
@@ -27,8 +27,8 @@ export const MainNavbar = () => {
             <p className='text-white'>{item.label}</p>
             {item.label === "Mi Carrito" && products.length > 0 && (
               <>
-                <MessageCircle fill='#292929' size={48} className='absolute -top-8 -right-7' />
-                <span className={`absolute -top-5 ${products.length > 9 ? '-right-[11px]' : '-right-2'}`}>
+                <MessageCircle fill='#292929' size={48} className='absolute -top-8 right-0' />
+                <span className={`absolute -top-5 ${products.length > 9 ? 'right-4' : 'right-5'}`}>
                   {products.length}
                 </span>
               </>
