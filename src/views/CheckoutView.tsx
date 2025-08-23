@@ -52,12 +52,12 @@ export default function CheckoutView() {
             <div className="flex flex-col gap-3 pt-2">
               <BaseButton
                 content="EN LOCAL"
-                color="primary"
+                color={methodDelivery === "local" ? "secondary" : "primary"}
                 onClick={() => setMethodDelivery("local")}
               />
               <BaseButton
                 content="A DOMICILIO"
-                color="primary"
+                color={methodDelivery === "delivery" ? "secondary" : "primary"}
                 onClick={() => setMethodDelivery("delivery")}
               />
             </div>

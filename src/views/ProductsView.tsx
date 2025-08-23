@@ -13,10 +13,10 @@ export default function ProductsView() {
   const [openFilters, setOpenFilters] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
-  const { selectedCategory, minPrice, maxPrice, cleanFilters, resetCategory } = useProductStore();
+  const { selectedCategory, cleanFilters, resetCategory } = useProductStore();
 
   const debouncedSearchTerm = useCustomDebounce(searchTerm, 300);
-  const { data, isLoading } = useGetAllProducts(currentPage, selectedCategory, debouncedSearchTerm, minPrice, maxPrice);
+  const { data, isLoading } = useGetAllProducts(currentPage, selectedCategory, debouncedSearchTerm);
 
   useEffect(() => {
     if (data?.totalPages) setTotalPages(data.totalPages);

@@ -21,20 +21,57 @@ model Product {
   status      String
   imageUrl    String?
   categoryId  String
-  category    Category @relation(fields: [categoryId], references: [id])
 
   createAt    DateTime @default(now())
   updateAt    DateTime @updatedAt
 
+  // relationships
+  orderProducts   OrderProducts[]
+  category    Category @relation(fields: [categoryId], references: [id])
   @@map("products")
 }
 
 model Category {
   id          String  @id @default(uuid())
   name        String
-  products    Product[]
+
   createAt    DateTime @default(now())
   updateAt    DateTime @updatedAt
 
+  // relationships
+  products    Product[]
   @@map("categories")
+}
+
+model Order {
+  id              String  @id @default(uuid())
+  name            String
+  phone           Int
+  typeOfDelivery  String
+  address         String?
+  typeOfPayment   String
+  imageVoucher    String?
+  notes           String?
+
+  createAt        DateTime @default(now())
+  updateAt        DateTime @updatedAt
+
+  // relationships
+  orderProducts   OrderProducts[]
+  @@map("orders")
+}
+
+model OrderProducts {
+  id          String  @id @default(uuid())
+  orderId     String
+  productId   String
+  quantity    Int
+
+  createAt    DateTime @default(now())
+  updateAt    DateTime @updatedAt
+
+  // relationships
+  order       Order   @relation(fields: [orderId], references: [id])
+  product     Product @relation(fields: [productId], references: [id])
+  @@map("orderProducts")
 }

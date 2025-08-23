@@ -7,12 +7,10 @@ const prefijo = `${apiUrl}/api`;
 export const getAllProducts = async (
   page: number = 1,
   category: string,
-  search?: string,
-  minPrice: number = 0,
-  maxPrice: number = 500
+  search?: string
 ) => {
   try {
-    const querys = buildQueryParams({ page, limit: 4, category, search, minPrice, maxPrice });
+    const querys = buildQueryParams({ page, limit: 4, category, search });
     const { data } = await axios.get(`${prefijo}/products?${querys}`);
     return data;
   } catch (error) {

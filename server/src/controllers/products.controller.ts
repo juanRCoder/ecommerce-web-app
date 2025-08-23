@@ -6,15 +6,13 @@ export const getProducts = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { page, limit, category, search, minPrice, maxPrice } = req.query;
+  const { page, limit, category, search } = req.query;
   if (!page || !limit) {
     res.status(400).json({ message: "Page and Limit is required" });
     return;
   }
   const pageNumber = Number(page);
   const limitNumber = Number(limit);
-  const minPriceNumber = Number(minPrice);
-  const maxPriceNumber = Number(maxPrice);
 
   if (isNaN(pageNumber) || isNaN(limitNumber)) {
     res.status(400).json({ message: "Page and Limit must be numbers" });
@@ -38,21 +36,6 @@ export const getProducts = async (
           name: {
             equals: category as string,
           },
-        },
-      });
-    }
-
-    if (!isNaN(minPriceNumber)) {
-      conditions.push({
-        price: {
-          gte: minPriceNumber,
-        },
-      });
-    }
-    if (!isNaN(maxPriceNumber)) {
-      conditions.push({
-        price: {
-          lte: maxPriceNumber,
         },
       });
     }
