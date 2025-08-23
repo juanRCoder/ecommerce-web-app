@@ -1,7 +1,8 @@
 import { ShoppingCart } from 'lucide-react';
-import { MainHeader, MainNavbar, ProductCard } from '@/components';
-import { useCartStore } from '@/stores/cart.store';
 import { useNavigate } from 'react-router-dom';
+import { MainHeader, MainNavbar, ProductCard } from '@/components';
+import { BaseButton } from '@/shared';
+import { useCartStore } from '@/stores/cart.store';
 
 export default function CartView() {
   const navigate = useNavigate();
@@ -24,9 +25,12 @@ export default function CartView() {
           <h3 className='font-semibold'>PRECIO TOTAL</h3>
           <p className='font-bold text-2xl text-nowrap'>S/ {totalPrice.toFixed(2)}</p>
         </div>
-        <button onClick={()=>navigate('/checkout')} className='bg-[#208572] text-white w-full mt-4 py-2 rounded-xl cursor-pointer'>
-          REGISTRAR PAGO
-        </button>
+        <BaseButton
+          content="REGISTRAR PAGO"
+          color="secondary"
+          className='mt-4'
+          onClick={() => navigate('/checkout')}
+        />
       </div>
       <MainNavbar />
     </section>

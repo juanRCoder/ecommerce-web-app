@@ -1,6 +1,7 @@
 import { Minus, Plus, Trash2 } from "lucide-react";
 import { useCartStore } from "@/stores/cart.store";
 import { ProductToCart } from "@/types/products.types";
+import { BaseButton } from "@/shared/BaseButton";
 
 interface ProductCardProps {
   product: ProductToCart,
@@ -34,7 +35,7 @@ export const ProductCard = ({ product, cartMode = false }: ProductCardProps) => 
         </div>
         {cartMode ? (
           <div className='inline-flex items-center justify-between rounded-[5px] min-[320px]:w-24 mt-2'>
-            <span 
+            <span
               onClick={() => updateProductFromCart(product.id, product.quantity - 1)}
               className='bg-[#208572] rounded-[5px] p-1.5 flex-1 grid place-items-center cursor-pointer'
             >
@@ -49,12 +50,12 @@ export const ProductCard = ({ product, cartMode = false }: ProductCardProps) => 
             </span>
           </div>
         ) : (
-          <button
+          <BaseButton
+            content="AGREGAR"
+            color="primary"
+            className="mt-2 !py-1"
             onClick={() => addProduct(product)}
-            className='outline outline-[#208572] py-[5px] text-[#208572] rounded-[5px] cursor-pointer mt-2'
-          >
-            AGREGAR
-          </button>
+          />
         )}
       </div>
       {cartMode && (

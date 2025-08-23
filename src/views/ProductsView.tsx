@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Search, SlidersHorizontal, Store } from 'lucide-react';
-
 import { MainHeader, MainNavbar, ProductCard, ProductFilters } from '@/components';
 import { useGetAllProducts, useCustomDebounce } from '@/hooks';
-import { BasePagination } from '@/shared/BasePagination';
+import { BasePagination } from '@/shared';
 import { useProductStore } from '@/stores/products.store';
 import type { Product } from '@/types/products.types';
 
@@ -13,7 +12,6 @@ export default function ProductsView() {
   const [totalPages, setTotalPages] = useState<number>(1)
   const [openFilters, setOpenFilters] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-
 
   const { selectedCategory, minPrice, maxPrice, cleanFilters, resetCategory } = useProductStore();
 
