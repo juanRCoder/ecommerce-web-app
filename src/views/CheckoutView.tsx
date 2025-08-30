@@ -1,31 +1,54 @@
-import { useState, useEffect } from "react";
 import { ShoppingCart } from "lucide-react";
+import { useForm } from "react-hook-form";
 import { MainHeader, MainNavbar } from "@/components";
 import { BaseButton, BaseInput } from "@/shared";
 import { useCartStore } from "@/stores/cart.store";
+import { removeEmptyProperties } from "@/utils/RemoveEmptyProperties";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { checkoutInferSchema, checkoutSchema } from "@/schemas/checkout.schema";
+
 
 export default function CheckoutView() {
   const { products } = useCartStore()
   const totalPrice = products.reduce((acc, item) => acc + item.price * item.quantity, 0)
 
-  const [name, setName] = useState<string>('');
-  const [phone, setPhone] = useState<string>('');
-  const [methodPayment, setMethodPayment] = useState<string>('');
-  const [methodDelivery, setMethodDelivery] = useState<string>('');
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm<checkoutInferSchema>({
+    resolver: zodResolver(checkoutSchema),
+    shouldUnregister: true,
+    defaultValues: {
+      typeOfDelivery: "",
+      typeOfPayment: "",
+    }
+  });
 
-  useEffect(() => {
-    console.log("Name:", name);
-    console.log("Phone:", phone);
-    console.log("Payment Method:", methodPayment);
-    console.log("Delivery Method:", methodDelivery);
-  }, [name, phone, methodPayment, methodDelivery])
+
+
+  const methodDelivery = watch("typeOfDelivery")
+  const methodPayment = watch("typeOfPayment")
+  const selectedFile = watch("imageVoucher");
+
+  const onSubmit = (data: checkoutInferSchema) => {
+    const cleanData = removeEmptyProperties(data)
+    const payload = {
+      ...cleanData,
+      phone: Number(data.phone),
+    }
+    console.log("payload", payload)
+  }
 
   return (
     <section
       className="select-none relative flex flex-col justify-between max-w-sm m-auto min-h-screen bg-white"
       style={{ fontFamily: "Oswald" }}
     >
-      <section className="flex-1 px-2 pb-3">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex-1 px-2 pb-3">
         <MainHeader title="CHECKOUT" icon={ShoppingCart} />
 
         <div className="flex flex-col gap-4 mb-4">
@@ -33,16 +56,18 @@ export default function CheckoutView() {
             <h3 className="text-[#292929] font-semibold text-lg">DATOS DEL CLIENTE</h3>
             <div className="flex flex-col gap-3 pt-2">
               <BaseInput
+                id="name"
                 label="Nombre y Apellido"
                 type="text"
-                name="name"
-                onChange={(e) => setName(e.target.value)}
+                register={register}
+                errors={errors}
               />
               <BaseInput
+                id="phone"
                 label="Telefono Movil"
                 type="number"
-                name="phone"
-                onChange={(e) => setPhone(e.target.value)}
+                register={register}
+                errors={errors}
               />
             </div>
           </div>
@@ -50,27 +75,35 @@ export default function CheckoutView() {
           <div>
             <h3 className="text-[#292929] font-semibold text-lg">TIPO DE ENTREGA</h3>
             <div className="flex flex-col gap-3 pt-2">
+              <input type="hidden" {...register("typeOfDelivery")} />
               <BaseButton
                 content="EN LOCAL"
                 color={methodDelivery === "local" ? "secondary" : "primary"}
-                onClick={() => setMethodDelivery("local")}
+                onClick={() => setValue("typeOfDelivery", "local", { shouldValidate: true })}
               />
               <BaseButton
                 content="A DOMICILIO"
                 color={methodDelivery === "delivery" ? "secondary" : "primary"}
-                onClick={() => setMethodDelivery("delivery")}
+                onClick={() => setValue("typeOfDelivery", "delivery", { shouldValidate: true })}
               />
             </div>
+
+            {errors.typeOfDelivery && (
+              <p className="text-red-500 text-sm">{errors.typeOfDelivery.message}</p>
+            )}
           </div>
+
 
           {methodDelivery === "delivery" && (
             <div>
               <h3 className="text-[#292929] font-semibold text-lg">DATOS ADICIONALES</h3>
               <div className="flex flex-col gap-3 pt-2">
                 <BaseInput
+                  id="address"
                   label="Direccion de entrega"
                   type="text"
-                  name="address"
+                  register={register}
+                  errors={errors}
                 />
               </div>
             </div>
@@ -78,17 +111,21 @@ export default function CheckoutView() {
           <div>
             <h3 className="text-[#292929] font-semibold text-lg">TIPO DE PAGO</h3>
             <div className="flex flex-col gap-3 pt-2">
+              <input type="hidden" {...register("typeOfPayment")} />
               <BaseButton
                 content="EFECTIVO"
-                color="primary"
-                onClick={() => setMethodPayment("cash")}
+                color={methodPayment === "cash" ? "secondary" : "primary"}
+                onClick={() => setValue("typeOfPayment", "cash", { shouldValidate: true })}
               />
               <BaseButton
                 content="TARJETA DE CREDITO"
-                color="primary"
-                onClick={() => setMethodPayment("credit")}
+                color={methodPayment === "credit" ? "secondary" : "primary"}
+                onClick={() => setValue("typeOfPayment", "credit", { shouldValidate: true })}
               />
             </div>
+            {errors.typeOfPayment && (
+              <p className="text-red-500 text-sm">{errors.typeOfPayment.message}</p>
+            )}
           </div>
 
           {methodPayment === "credit" && (
@@ -111,18 +148,39 @@ export default function CheckoutView() {
                     </div>
                   </figure>
                 </section>
-                <div>
-                  <p className="text-[#292929] text-xs font-medium mt-4 mb-2">
-                    IMAGEN SUBIDA: imagen.png
+                {selectedFile && (
+                  <p className="text-sm text-gray-700 mt-2">
+                    Imagen seleccionada:{" "}
+                    <span className="font-semibold">{selectedFile.name}</span>
                   </p>
-                  <button className="cursor-pointer w-full bg-[#208572] py-[5px] rounded-[5px]">
+                )}
+                <div className="flex flex-col gap-2 mt-2">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    id="fileInput"
+                    onChange={(e) => {
+                      if (e.target.files?.[0]) {
+                        setValue("imageVoucher", e.target.files[0], { shouldValidate: true });
+                      }
+                    }}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => document.getElementById("fileInput")?.click()}
+                    className="cursor-pointer w-full bg-[#208572] text-white py-[5px] rounded-[5px]"
+                  >
                     SUBIR COMPROBANTE DE PAGO
                   </button>
+
+                  {errors.imageVoucher && (
+                    <p className="text-red-500 text-sm">{errors.imageVoucher.message}</p>
+                  )}
                 </div>
               </div>
             </>
           )}
-
           <div>
             <h3 className="text-[#292929] font-semibold text-lg">RESUMEN DE LA COMPRA</h3>
             <section className="flex flex-col gap-2 my-2">
@@ -146,9 +204,11 @@ export default function CheckoutView() {
 
           {methodPayment === "cash" && methodDelivery === "delivery" && (
             <BaseInput
+              id="notes"
               label="Monto aproximado con el que pagara los productos?"
               type="text"
-              name="amount"
+              register={register}
+              errors={errors}
             />
           )}
           <div className="flex flex-col gap-2">
@@ -157,12 +217,13 @@ export default function CheckoutView() {
               color="primary"
             />
             <BaseButton
+              type="submit"
               content="COMPRAR"
               color="secondary"
             />
           </div>
         </div>
-      </section>
+      </form>
       <MainNavbar />
     </section>
   );

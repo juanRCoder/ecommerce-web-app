@@ -2,10 +2,11 @@ type BaseButtonProps = {
   color: 'primary' | 'secondary'
   content: string
   className?: string
+  type?: 'button' | 'submit'
   onClick?: () => void
 }
 
-export const BaseButton = ({ content, color, className, onClick }: BaseButtonProps) => {
+export const BaseButton = ({ content, color, className, type = 'button', onClick }: BaseButtonProps) => {
   let buttonStyles = ''
 
   switch (color) {
@@ -19,6 +20,7 @@ export const BaseButton = ({ content, color, className, onClick }: BaseButtonPro
 
   return (
     <button
+      type={type}
       onClick={onClick}
       className={`cursor-pointer w-full py-2 rounded-[5px] ${buttonStyles} ${className}`}
     >
