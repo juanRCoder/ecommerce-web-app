@@ -4,13 +4,14 @@ import { MainHeader, MainNavbar } from "@/components";
 import { BaseButton, BaseInput } from "@/shared";
 import { useCartStore } from "@/stores/cart.store";
 import { removeEmptyProperties } from "@/utils/RemoveEmptyProperties";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { checkoutInferSchema, checkoutSchema } from "@/schemas/checkout.schema";
+import { useCreateOrder } from "@/hooks/useCreateOrder";
 
 
 export default function CheckoutView() {
   const { products } = useCartStore()
+  const { mutate } = useCreateOrder();
   const totalPrice = products.reduce((acc, item) => acc + item.price * item.quantity, 0)
 
   const {
@@ -28,19 +29,42 @@ export default function CheckoutView() {
     }
   });
 
-
-
   const methodDelivery = watch("typeOfDelivery")
   const methodPayment = watch("typeOfPayment")
   const selectedFile = watch("imageVoucher");
 
   const onSubmit = (data: checkoutInferSchema) => {
     const cleanData = removeEmptyProperties(data)
-    const payload = {
-      ...cleanData,
-      phone: Number(data.phone),
+    const formData = new FormData();
+
+    formData.append("name", cleanData.name || "");
+    formData.append("phone", String(cleanData.phone));
+    formData.append("typeOfDelivery", cleanData.typeOfDelivery || "");
+    if (cleanData.address) formData.append("address", cleanData.address);
+    formData.append("typeOfPayment", cleanData.typeOfPayment || "");
+    if (cleanData.notes) formData.append("notes", cleanData.notes);
+    if (cleanData.imageVoucher) formData.append("imageVoucher", cleanData.imageVoucher);
+
+    if (Array.isArray(products)) {
+      const mappedProducts = products.map((p) => ({
+        productId: p.id,
+        quantity: p.quantity
+      }));
+      formData.append("products", JSON.stringify(mappedProducts));
     }
-    console.log("payload", payload)
+
+    // for (const [key, value] of formData.entries()) {
+    //   console.log(key, value);
+    // }
+
+    mutate(formData, {
+      onSuccess: (data) => {
+        console.log("Order created successfully:", data);
+      },
+      onError: (error) => {
+        console.error("Error creating order:", error);
+      },
+    });
   }
 
   return (

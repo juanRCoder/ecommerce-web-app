@@ -57,6 +57,7 @@ export const createOrder = async (
     const newOrder = await prisma.order.create({
       data: {
         ...order,
+        phone: Number(order.phone),
         imageVoucher: uploadedImage ? uploadedImage.secure_url : null,
         orderProducts: {
           create: products.map(
