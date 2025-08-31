@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import { uploadImageToCloudinary } from "../config/cloudinary";
 import prisma from "../prismaClient";
 
 export const getOrders = async (
@@ -31,11 +32,32 @@ export const createOrder = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { products, ...order } = req.body;
+  const { products: productsRaw, ...order } = req.body;
+  const receivedFile = req.file;
+
+  const products: { productId: string; quantity: number }[] =
+    typeof productsRaw === "string" ? JSON.parse(productsRaw) : productsRaw;
+
+  if (!Array.isArray(products)) {
+    res.status(400).json({ error: "Products is not defined" });
+    return;
+  }
+
   try {
+    let uploadedImage = null;
+    const folderName = "ecommerce-web-app-cloudry";
+
+    if (receivedFile) {
+      uploadedImage = await uploadImageToCloudinary(
+        receivedFile.buffer,
+        folderName
+      );
+    }
+
     const newOrder = await prisma.order.create({
       data: {
         ...order,
+        imageVoucher: uploadedImage ? uploadedImage.secure_url : null,
         orderProducts: {
           create: products.map(
             (pr: { productId: string; quantity: number }) => ({
