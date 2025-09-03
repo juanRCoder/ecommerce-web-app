@@ -1,5 +1,6 @@
 import { ShoppingCart } from "lucide-react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { MainHeader, MainNavbar } from "@/components";
 import { BaseButton, BaseInput } from "@/shared";
 import { useCartStore } from "@/stores/cart.store";
@@ -7,10 +8,13 @@ import { removeEmptyProperties } from "@/utils/RemoveEmptyProperties";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { checkoutInferSchema, checkoutSchema } from "@/schemas/checkout.schema";
 import { useCreateOrder } from "@/hooks/useCreateOrder";
+import { useVoucherStore } from "@/stores/voucher.store";
 
 
 export default function CheckoutView() {
+  const navigate = useNavigate()
   const { products } = useCartStore()
+  const { setData } = useVoucherStore();
   const { mutate } = useCreateOrder();
   const totalPrice = products.reduce((acc, item) => acc + item.price * item.quantity, 0)
 
@@ -60,6 +64,8 @@ export default function CheckoutView() {
     mutate(formData, {
       onSuccess: (data) => {
         console.log("Order created successfully:", data);
+        setData(data);
+        navigate('/voucher');
       },
       onError: (error) => {
         console.error("Error creating order:", error);

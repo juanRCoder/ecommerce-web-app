@@ -72,7 +72,17 @@ export const createOrder = async (
       },
     });
 
-    res.status(201).json({ data: { nOrden: newOrder.id } });
+    res.status(201).json({
+      data: {
+        nOrden: newOrder.id,
+        phone: newOrder.phone,
+        name: newOrder.name,
+        payment: newOrder.typeOfPayment,
+        delivery: newOrder.typeOfDelivery,
+        ...(newOrder.address && { address: newOrder.address }), 
+        ...(newOrder.notes && { notes: newOrder.notes })
+      }
+    });
   } catch (error) {
     console.error("[Controller: createOrder]", error);
     next(error);

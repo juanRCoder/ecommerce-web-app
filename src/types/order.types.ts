@@ -7,3 +7,13 @@ export interface Order {
   imageVoucher?: File
   notes?: string
 }
+
+export interface Voucher {
+  nOrden: string
+  phone: number
+  name: string
+  payment: string
+  delivery: string
+  address?: string
+  notes?: string
+}
